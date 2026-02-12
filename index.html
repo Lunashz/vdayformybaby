@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Valentine’s Day, my doc.!</title>
+
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+body{
+  font-family:'Segoe UI',sans-serif;
+  background:linear-gradient(180deg,#ffd6e8,#fff7ef);
+  color:#5a3a4e;
+  overflow-x:hidden;
+}
+
+h1,h2{
+  font-family:'Brush Script MT',cursive;
+  text-align:center;
+}
+
+/* ================= LANDING ================= */
+#landing{
+  min-height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  text-align:center;
+}
+
+.envelope{
+  width:340px;
+  height:230px;
+  background:#ff9ecb;
+  border-radius:14px;
+  margin:40px auto 25px auto;
+  position:relative;
+  box-shadow:0 0 35px rgba(255,150,200,.8);
+}
+
+.envelope::before{
+  content:'';
+  position:absolute;
+  top:0;
+  left:0;
+  width:100%;
+  height:60%;
+  background:#ff7fb8;
+  clip-path:polygon(0 0,100% 0,50% 100%);
+  transform-origin:top;
+  transition:1s ease;
+}
+
+.envelope.open::before{
+  transform:rotateX(180deg);
+}
+
+.open-btn{
+  display:block;
+  margin:0 auto;
+  background:#ff6fae;
+  color:white;
+  padding:14px 40px;
+  border-radius:30px;
+  font-size:18px;
+  border:none;
+  cursor:pointer;
+}
+
+/* ================= MAIN ================= */
+#main{
+  display:none;
+  padding:80px 20px;
+}
+
+.envelope-grid{
+  display:flex;
+  justify-content:center;
+  gap:50px;
+  flex-wrap:wrap;
+}
+
+/* ================= LABEL ================= */
+.envelope-card{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+}
+
+.envelope-label{
+  font-family:'Brush Script MT',cursive;
+  font-size:26px;
+  margin-bottom:15px;
+}
+
+/* ================= ENVELOPE ================= */
+.content-envelope{
+  width:360px;
+  height:380px;
+  position:relative;
+  border-radius:20px;
+  background:linear-gradient(180deg,#ffe3f0,#fff);
+  box-shadow:0 0 30px rgba(255,170,210,.6);
+  overflow:hidden;
+}
+
+/* FLAP */
+.inner-flap{
+  position:absolute;
+  top:0;
+  left:0;
+  width:100%;
+  height:120px;
+  background:linear-gradient(180deg,#ff9ecb,#ff7fb8);
+  clip-path:polygon(0 0,100% 0,50% 100%);
+  transform-origin:top;
+  transition:.8s ease;
+  z-index:2;
+  cursor:pointer;
+}
+
+.content-envelope.closed .inner-flap{
+  transform:rotateX(0);
+}
+
+.content-envelope.open .inner-flap{
+  transform:rotateX(180deg);
+}
+
+/* CONTENT STARTS FROM TOP */
+.envelope-content{
+  position:absolute;
+  top:120px;   /* directly under flap */
+  left:0;
+  width:100%;
+  height:calc(100% - 120px);
+  padding:15px;
+  opacity:0;
+  overflow-y:auto;
+  transition:.6s ease;
+}
+
+.content-envelope.open .envelope-content{
+  opacity:1;
+}
+
+/* PHOTO GRID */
+.photo-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:10px;
+}
+
+.photo-grid img{
+  width:100%;
+  border-radius:12px;
+  cursor:pointer;
+  transition:.3s;
+}
+
+.photo-grid img:hover{
+  transform:scale(1.05);
+}
+
+/* FLOWERS */
+.flower-grid img{
+  width:100%;
+  border-radius:12px;
+  cursor:pointer;
+}
+
+/* LETTER */
+.letter{
+  background:repeating-linear-gradient(#fffafc,#fffafc 28px,#ffd6e8 29px);
+  padding:15px;
+  border-radius:12px;
+}
+
+/* LIGHTBOX */
+.lightbox{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.85);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  visibility:hidden;
+  opacity:0;
+  transition:.3s ease;
+  z-index:200;
+}
+
+.lightbox.active{
+  visibility:visible;
+  opacity:1;
+}
+
+.lightbox img{
+  max-width:90%;
+  max-height:85%;
+  border-radius:16px;
+}
+
+/* POPUP */
+.popup-overlay{
+  position:fixed;
+  inset:0;
+  background:rgba(255,182,213,.6);
+  backdrop-filter:blur(6px);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  visibility:hidden;
+  opacity:0;
+  transition:.4s ease;
+  z-index:100;
+}
+
+.popup-overlay.active{
+  visibility:visible;
+  opacity:1;
+}
+
+.popup-box{
+  background:white;
+  padding:40px;
+  border-radius:20px;
+  text-align:center;
+}
+
+.popup-box button{
+  margin:10px;
+  padding:12px 25px;
+  border-radius:25px;
+  border:none;
+  background:#ff6fae;
+  color:white;
+  cursor:pointer;
+}
+
+@media(max-width:900px){
+  .content-envelope{
+    width:90%;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<section id="landing">
+  <div>
+    <h1>Happy Valentine’s Day 💕</h1>
+    <div class="envelope" id="mainEnvelope"></div>
+    <button class="open-btn" onclick="openValentine()">💗 Open 💗</button>
+  </div>
+</section>
+
+<section id="main">
+  <div class="envelope-grid">
+
+    <!-- OUR MEMORIES -->
+    <div class="envelope-card">
+      <div class="envelope-label">Our Memories 🌷</div>
+      <div class="content-envelope closed">
+        <div class="inner-flap" onclick="toggleEnvelope(this.parentElement)"></div>
+        <div class="envelope-content">
+          <div class="photo-grid">
+            <img src="1.jpg">
+            <img src="2.jpg">
+            <img src="3.jpg">
+            <img src="4.jpg">
+            <img src="5.jpg">
+            <img src="6.jpg">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FLOWERS -->
+    <div class="envelope-card">
+      <div class="envelope-label">Flowers For You 🌷</div>
+      <div class="content-envelope closed">
+        <div class="inner-flap" onclick="toggleEnvelope(this.parentElement)"></div>
+        <div class="envelope-content">
+          <div class="flower-grid">
+            <img src="">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- LOVE LETTER -->
+    <div class="envelope-card">
+      <div class="envelope-label">My Love Letter 💖</div>
+      <div class="content-envelope closed">
+        <div class="inner-flap" onclick="toggleEnvelope(this.parentElement)"></div>
+        <div class="envelope-content">
+          <div class="letter">
+            You are my happiness and my forever Valentine 💕
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- POPUP -->
+<div class="popup-overlay" id="popup">
+  <div class="popup-box">
+    <h2>Can I be your Valentine? 💕</h2>
+    <button onclick="enterMain()">Yes 💖</button>
+    <button onclick="enterMain()">Of course 💕</button>
+  </div>
+</div>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox()">
+  <img id="lightbox-img">
+</div>
+
+<script>
+function openValentine(){
+  document.getElementById('mainEnvelope').classList.add('open');
+  setTimeout(()=>{
+    document.getElementById('popup').classList.add('active');
+  },800);
+}
+
+function enterMain(){
+  document.getElementById('popup').classList.remove('active');
+  document.getElementById('landing').style.display='none';
+  document.getElementById('main').style.display='block';
+}
+
+function toggleEnvelope(el){
+  el.classList.toggle('open');
+  el.classList.toggle('closed');
+}
+
+document.querySelectorAll('.photo-grid img, .flower-grid img').forEach(img=>{
+  img.addEventListener('click', function(e){
+    e.stopPropagation();
+    document.getElementById('lightbox-img').src = this.src;
+    document.getElementById('lightbox').classList.add('active');
+  });
+});
+
+function closeLightbox(){
+  document.getElementById('lightbox').classList.remove('active');
+}
+</script>
+
+</body>
+</html>
